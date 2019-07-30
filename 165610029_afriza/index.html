@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- meta viewport memberikan instruksi ke browser untuk mengatur dimensi dan skala web -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0">
+  <!-- meta untuk kumpulan dari beberapa jenis pengkodean karakter -->
+  <meta charset="utf-8">
+  <!-- Judul pada tab browse  -->
+    <title>MY BIOGRAPH</title>
+    <!-- merefrensi file manifest untuk digunakan pada perangkat mobile  -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles/main.css">
+
+    <!--  tag link yang merefrensi untuk manifess sekaligus icon ketika add homescreen  -->
+    <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" >
+    
+    <link rel="icon" sizes="128x128" href="images/touch/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="images/touch/icon-128x128.png">
+
+    <link rel="icon" sizes="192x192" href="images/touch/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="images/touch/icon-192x192.png">
+
+    <link rel="icon" sizes="256x256" href="images/touch/icon-256x256.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="images/touch/icon-256x256.png">
+
+    <link rel="icon" sizes="384x384" href="images/touch/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="images/touch/icon-384x384.png">
+
+    <link rel="icon" sizes="512x512" href="images/touch/icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="images/touch/icon-512x512.png">
+  </head>
+  <body>
+
+    <header>
+      <h1>MY BIOGRAPH</h1>
+    </header>
+
+    <main>
+      <!-- tombol add homescreen  -->
+      <section id="installBanner" class="banner">
+        <button id="installBtn">Install APPS MYBIO</button>
+      </section>
+
+      <section class="img-container">
+        <img src="images/gambar3.jpg" alt="gambar sebelum di sketch">
+      </section>
+
+      <!--Tombol Bantuan -->
+      <section class="buttons-container">
+        <button id="json-btn">JSON TEKS</button>
+        <button id="img-btn">FOTO SKETCH</button>
+        <button id="text-btn">BIO</button>
+      </section>
+
+      <section class="img-container" id="img-container">
+      <!-- tempat gambar ditampilkan -->
+      </section>
+
+      <section class="text-container">
+      <p id="message">
+          <!-- tempat biodata ditampilkan -->
+      </p>
+      </section>
+    </main>
+
+    <footer>
+      <a href="https://github.com/abangafriza/praktikum-pemrogramman-web-mobile">GitHub</a>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+    <script>
+    // Mengecek apakah ada servis worker yang dijalankan pada browser
+    if ('serviceWorker' in navigator) {
+      // Jika ada maka servis worker dijalankan (load)
+      window.addEventListener('load', function() {
+        // Jika ada maka service worker dijalankan (load)
+        navigator.serviceWorker.register('afriza-sw.js')
+          .then(reg => {
+            // Jika ada maka servis worker dijalankan (load)
+            console.log('Service worker registered! 😎', reg);
+          })
+          .catch(err => {
+            // Tampilkan pada console log browser jika gagal didaftarkan
+            console.log('😥 Service worker registration failed: ', err);
+          });
+      });
+    }
+  </script>
+
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      deferredPrompt = event;
+      document.querySelector('#installBtn').addEventListener('click', event => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice
+          .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the A2HS prompt');
+            } else {
+              console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+          });
+      });
+      document.querySelector('#installBanner').style.display = 'flex';
+    });
+  </script>
+  </body>
+</html>
